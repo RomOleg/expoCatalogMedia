@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 
 export const FilmsScreen = () => {
     return (
-        <View>
+        <View style={styles.conteiner}>
             <Text>Films</Text>
         </View>
     )

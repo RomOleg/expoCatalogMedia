@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from "react-native";
 
 export const BooksScreen = () => {
     return (
-        <View>
+        <View style={styles.conteiner}>
             <Text>Books</Text>
         </View>
     )
