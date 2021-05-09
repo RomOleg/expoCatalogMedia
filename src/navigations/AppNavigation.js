@@ -50,21 +50,18 @@ const AppNavigation = createBottomTabNavigator(
             screen: SerialNavigation,
             navigationOptions: {
                 title: 'Serials',
-                animationEnabled: true,
             },
         },
         Films: {
             screen: _FilmsNavigator,
             navigationOptions: {
                 title: 'Films',
-                animationEnabled: true,
             },
         },
         Books: {
             screen: _BooksNavigator,
             navigationOptions: {
                 title: 'Books',
-                animationEnabled: true,
             },
         },
         // Drawer: {

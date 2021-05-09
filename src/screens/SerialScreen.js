@@ -32,23 +32,13 @@ export const SerialScreen = ({ navigation }) => {
                 <Button
                     onPress={incS}
                     type="outline"
-                    buttonStyle={{
-                        flex: 1,
-                        height: 100,
-                        width: 100,  
-                    }}
-
+                    buttonStyle={styles.btn}
                     title="+"
                 />
                 <Button
                     onPress={incE}
                     type="outline"
-                    buttonStyle={{
-                        flex: 1,
-                        height: 100,
-                        width: 100,  
-                    }}
-
+                    buttonStyle={styles.btn}
                     title="+"
                 />
             </View>
@@ -65,6 +55,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     btn: {
-        
+        flex: 1,
+        height: 100,
+        width: 100,  
     }
 })
