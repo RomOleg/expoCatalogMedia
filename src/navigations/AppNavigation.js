@@ -6,6 +6,7 @@ import { SerialsScreen } from '../screens/SerialsScreen';
 import { BooksScreen } from '../screens/BooksScreen';
 import { FilmsScreen } from '../screens/FilmsScreen';
 import  DrawerNavigation  from './DrawerNavigation'
+import SerialNavigation from './SerialNavigation';
 
 const _SerialsNavigator = createStackNavigator(
     {
@@ -46,7 +47,7 @@ const _BooksNavigator = createStackNavigator(
 const AppNavigation = createBottomTabNavigator(
     {
         Serials: {
-            screen: _SerialsNavigator,
+            screen: SerialNavigation,
             navigationOptions: {
                 title: 'Serials',
                 animationEnabled: true,

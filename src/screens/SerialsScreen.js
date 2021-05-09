@@ -1,28 +1,18 @@
 import React , { useState } from 'react';
 import { Text, View, StyleSheet, Alert, TouchableOpacity, ScrollView, Button } from "react-native";
 import { ListItem, Avatar, Input } from 'react-native-elements';
+import { createDrawerNavigator } from "react-navigation-drawer";
 // import { FAB } from 'react-native-fab';
 import { MyFAB } from '../components/MyFAB';
 
-export const SerialsScreen = () => {
+export const SerialsScreen = ({ navigation }) => {
 
     const [list, setList] = useState([
-        { id: "1", name: 'serial 1', status: "просмотренно" },
-        { id: "2",name: 'serial 2',status: "смотрю" },
-        { id: "3",name: 'serial 3',status: "смотрю" },
-        { id: "4",name: 'serial 4',status: "смотрю" },
-        { id: "5",name: 'serial 5',status: "смотрю" },
-        { id: "6",name: 'serial 6',status: "смотрю" },
-        { id: "7",name: 'serial 7',status: "смотрю" },
-        { id: "8",name: 'serial 8',status: "смотрю" },
-        { id: "9",name: 'serial 9',status: "смотрю" },
-        { id: "11",name: 'serial 12',status: "смотрю" },
-        { id: "12",name: 'serial 122',status: "смотрю" },
-        { id: "13",name: 'serial 23',status: "смотрю" },
-        { id: "14",name: 'serial 2222',status: "смотрю" },
-        { id: "21",name: 'serial 32',status: "смотрю" },
-        { id: "22",name: 'serial 33',status: "смотрю" },
-        { id: "23",name: 'serial 44',status: "смотрю" },
+        { id: "11", name: 'Arrow', s: 1, e: 1 },
+        { id: "12", name: 'serial 223', s: 3, e: 1 },
+        { id: "13", name: 'serial 224', s: 20, e: 2 },
+        { id: "14", name: 'serial 1', s: 1, e: 2 },
+        { id: "15", name: 'serial 2', s: 1, e: 3 },
     ]);
         
     const addSerial = (name) => {
@@ -37,25 +27,66 @@ export const SerialsScreen = () => {
                 }
         ])
     }
+
+    const incS = (id) => {
+        setList(prev => prev.filter(prev => {
+            if (prev.id == id) {
+                prev.s++;
+            }
+            return prev
+        }))
+    }
+
+    const deсS = (id) => {
+        setList(prev => prev.filter(prev => {
+            if (prev.id == id) {
+                prev.s--;
+            }
+            return prev
+        }))
+    }
+
+    const incE = (id) => {
+        setList(prev => prev.filter(prev => {
+            if (prev.id == id) {
+                prev.e++;
+            }
+            return prev
+        }))
+    }
+
+    const deсE = (id) => {
+        setList(prev => prev.filter(prev => {
+            if (prev.id == id) {
+                prev.e--;
+            }
+            return prev
+        }))
+    }
         
     const deleteSerial = (id) => {
-        console.log(`delete ${id}`);
-        console.log(list);
         setList(prev => prev.filter(prev => prev.id !== id))
+    }
+
+    // const drawer = createDrawerNavigator()
+
+    // const toggleMenu = () => {
+    //     drawer.toggleDraver();
+    // }
+
+    const gotoStrial = (id, name, s, e) => {
+        navigation.navigate('Serial', { name, s, e , incS, id, incE })
     }
 
     return (
         <ScrollView style={styles.conteiner}>
-        
-         
-
         {
             list.map((el, i) => (
                 <ListItem key={i} bottomDivider>  
                     <ListItem.Content>
-                        <TouchableOpacity onPress={() => alert(el.name)} onLongPress={() => deleteSerial(el.id)}>
+                        <TouchableOpacity onPress={() => gotoStrial(el.id, el.name, el.s, el.e)} onLongPress={() => deleteSerial(el.id)}>
                         <ListItem.Title>{el.name}</ListItem.Title>
-                        <ListItem.Subtitle>{el.status}</ListItem.Subtitle>
+                        <ListItem.Subtitle>сезон: {el.s} серия: {el.e}</ListItem.Subtitle>
                         </TouchableOpacity>
                     </ListItem.Content>
                 </ListItem>
@@ -70,6 +101,5 @@ const styles = StyleSheet.create({
         flex: 1,
         // alignItems: 'center',
         // justifyContent: 'center'
-        
     }
 })
