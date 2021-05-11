@@ -2,28 +2,28 @@ import React, { useState } from "react";
 import {View, Text, StyleSheet } from 'react-native'
 import { Button, Input } from "react-native-elements";
 
-export const CreateFilmScreen = ({ navigation }) => {
+export const CreateBookScreen = ({ navigation }) => {
 
     const [name, setName] = useState();
 
-    const addFilm = () => {
+    const addBook = () => {
         if (name) {
-            const navigationAddFilm = navigation.getParam('addFilm')
-            navigationAddFilm(name)
+            const navigationAdd = navigation.getParam('addBook')
+            navigationAdd(name)
             navigation.goBack()
-        }else alert("Укажите название фильма")
+        }else alert("Укажите название книги")
     }
 
     return (
         <View style={styles.conteiner}>
-            <Text style={styles.text}>Название фильма</Text>
+            <Text style={styles.text}>Название книги</Text>
             <Input
-                placeholder='Введите название фильма'
+                placeholder='Введите название книги'
                 onChangeText={setName}
                 />
             <Button
                 type="outline"
-                onPress={addFilm}
+                onPress={addBook}
                 buttonStyle={{
                     flex: 1,
                     height: 100,

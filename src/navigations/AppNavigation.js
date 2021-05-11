@@ -2,66 +2,65 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from "react-navigation-stack";
 
-import { SerialsScreen } from '../screens/SerialsScreen';
-import { BooksScreen } from '../screens/BooksScreen';
-import { FilmsScreen } from '../screens/FilmsScreen';
 import  DrawerNavigation  from './DrawerNavigation'
 import SerialNavigation from './SerialNavigation';
+import { FilmNavigation } from './FilmNavigation';   
+import { BookNavigation } from './BookNavigation';
 
-const _SerialsNavigator = createStackNavigator(
-    {
-        Serials: {
-            screen: SerialsScreen,
-            navigationOptions: {
-                title: 'Serials',
-                headerTitleAlign: 'center',
-            },
-        }
-    }
-)
+// const _SerialsNavigator = createStackNavigator(
+//     {
+//         Serials: {
+//             screen: SerialsScreen,
+//             navigationOptions: {
+//                 title: 'Serials',
+//                 headerTitleAlign: 'center',
+//             },
+//         }
+//     }
+// )
 
-const _FilmsNavigator = createStackNavigator(
-    {
-        Films: {
-            screen: FilmsScreen,
-            navigationOptions: {
-                title: 'Films',
-                headerTitleAlign: 'center'
-            },
-        }
-    }
-)
+// const _FilmsNavigator = createStackNavigator(
+//     {
+//         Films: {
+//             screen: FilmsScreen,
+//             navigationOptions: {
+//                 title: 'Films',
+//                 headerTitleAlign: 'center'
+//             },
+//         }
+//     }
+// )
 
-const _BooksNavigator = createStackNavigator(
-    {
-        Books: {
-            screen: BooksScreen,
-            navigationOptions: {
-                title: 'Books',
-                headerTitleAlign: 'center'
-            },
-        }
-    }
-)
+// const _BooksNavigator = createStackNavigator(
+//     {
+//         Books: {
+//             screen: BooksScreen,
+//             navigationOptions: {
+//                 title: 'Books',
+//                 headerTitleAlign: 'center'
+//             },
+//         }
+//     }
+// )
 
 const AppNavigation = createBottomTabNavigator(
     {
         Serials: {
             screen: SerialNavigation,
             navigationOptions: {
-                title: 'Serials',
+                title: 'Сериалы',
             },
         },
         Films: {
-            screen: _FilmsNavigator,
+            screen: FilmNavigation,
             navigationOptions: {
-                title: 'Films',
+                title: 'Фильмы',
             },
         },
         Books: {
-            screen: _BooksNavigator,
+            screen: BookNavigation,
             navigationOptions: {
-                title: 'Books',
+                title: 'Книги',
             },
         },
         // Drawer: {

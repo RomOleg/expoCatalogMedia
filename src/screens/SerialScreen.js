@@ -19,6 +19,20 @@ export const SerialScreen = ({ navigation }) => {
         navigation.setParams({ e: x });
     }
 
+    const decS = () => {
+        const dec = navigation.getParam('decS');
+        dec(navigation.getParam('id'))
+        let x = navigation.getParam('s') - 1
+        navigation.setParams({ s: x });
+        // navigation.goBack()
+    }
+    const decE = () => {
+        const dec = navigation.getParam('decE');
+        dec(navigation.getParam('id'))
+        let x = navigation.getParam('e') - 1
+        navigation.setParams({ e: x });
+    }
+
     return (
         <View style={StyleSheet.conteiner}>
             <Text style={styles.text}>Сезон <Text>{navigation.getParam('s')}</Text></Text>
@@ -31,15 +45,17 @@ export const SerialScreen = ({ navigation }) => {
             <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                 <Button
                     onPress={incS}
+                    onLongPress={decS}
                     type="outline"
                     buttonStyle={styles.btn}
-                    title="+"
+                    title="+/-"
                 />
                 <Button
                     onPress={incE}
+                    onLongPress={decE}
                     type="outline"
                     buttonStyle={styles.btn}
-                    title="+"
+                    title="+/-"
                 />
             </View>
         </View>
