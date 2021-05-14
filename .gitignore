@@ -9,6 +9,13 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+# file js
+footer.js
+header.js
+SerialPage.js
+MyFAB.js
+# file png
+Floating_Button.png
 
 # macOS
 .DS_Store

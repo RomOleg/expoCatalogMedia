@@ -7,11 +7,12 @@ export const MyTextArea = ({ comment }) => {
             <TextInput
                 style={styles.textArea}
                 underlineColorAndroid="transparent"
-                placeholder="Your comment"
+                placeholder="Твой комментарий"
                 placeholderTextColor="grey"
                 numberOfLines={10}
                 multiline={true}
-                value={comment}
+                defaultValue={comment}
+                autoCapitalize={'sentences'}
             />
         </View>
     )
@@ -21,11 +22,13 @@ const styles = StyleSheet.create({
     textAreaContainer: {
       borderColor: 'gray',
       borderWidth: 1,
-      padding: 5
+      padding: 15,
+      margin: 10,
+      alignItems: 'center',
     },
     textArea: {
-      width: 300,  
-      height: 150,
-      justifyContent: "flex-start"
+      flex: 1,
+      width: "80%",  
+      height: 100,
     }
   })
