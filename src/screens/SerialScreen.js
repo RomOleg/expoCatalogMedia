@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { MyTextArea } from '../components/MyTextArea'
 import { Button } from 'react-native-elements';
 
@@ -34,30 +34,34 @@ export const SerialScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={StyleSheet.conteiner}>
-            <Text style={styles.text}>Сезон <Text>{navigation.getParam('s')}</Text></Text>
-            <Text style={styles.text}>Серия <Text>{navigation.getParam('e')}</Text></Text>
-            <MyTextArea comment={'my comment'}/>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Text style={styles.text}>Сезон</Text>
-                <Text style={styles.text}>Серия</Text>
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
-                <Button
-                    onPress={incS}
-                    onLongPress={decS}
-                    type="outline"
-                    buttonStyle={styles.btn}
-                    title="+/-"
-                />
-                <Button
-                    onPress={incE}
-                    onLongPress={decE}
-                    type="outline"
-                    buttonStyle={styles.btn}
-                    title="+/-"
-                />
-            </View>
+        <View style={styles.conteiner}>
+            <ScrollView>
+                <Text style={styles.text}>Сезон <Text>{navigation.getParam('s')}</Text></Text>
+                <Text style={styles.text}>Серия <Text>{navigation.getParam('e')}</Text></Text>
+                <MyTextArea comment={'my comment'}/>
+                <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                    <Text style={styles.text}>Сезон</Text>
+                    <Text style={styles.text}>Серия</Text>
+                </View>
+                <View style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+                    <Button
+                        onPress={incS}
+                        onLongPress={decS}
+                        type="outline"
+                        buttonStyle={styles.btn}
+                        title="+/-"
+                    />
+                    <Button
+                        onPress={incE}
+                        onLongPress={decE}
+                        type="outline"
+                        buttonStyle={styles.btn}
+                        buttonStyle={{fontSize: 40, width: 100, height: 60}}
+                        titleStyle={{fontSize: 20}}
+                        title="+/-"
+                    />
+                </View>
+            </ScrollView>
         </View>
     )
 }
@@ -72,7 +76,10 @@ const styles = StyleSheet.create({
     },
     btn: {
         flex: 1,
-        height: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // height: 50,
         width: 100,  
+        
     }
 })
