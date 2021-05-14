@@ -29,13 +29,12 @@ function openDatabase() {
 const db = openDatabase();
 
 export const SerialsScreen = ({ navigation }) => {
-
     const [items, setItems] = React.useState(null);
-    
+
     React.useEffect(() => {
         db.transaction((tx) => {
             tx.executeSql(
-                "create table if not exists serials (id integer primary key not null, name string, sezon int, epizod int);"
+                "create table if not exists serials (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), sezon INTEGER, epizod INTEGER, comment STRING);"
             );
         });
     }, []);
@@ -49,6 +48,7 @@ export const SerialsScreen = ({ navigation }) => {
             );
         });
     }, [items]);
+    // console.log(items);
 
     const deleteSerial = (id) => {
         db.transaction((tx) => {
@@ -57,7 +57,7 @@ export const SerialsScreen = ({ navigation }) => {
         // setItems(prev => prev.filter(prev => prev.id !== id))
     };
 
-    const gotoSerial = (id, name, s, e) => {
+    const gotoSerial = (id, name, s, e, comment) => {
         navigation.navigate("Serial", {
             name,
             s,
@@ -67,6 +67,18 @@ export const SerialsScreen = ({ navigation }) => {
             incE,
             decS,
             decE,
+            changeComment,
+            comment
+        });
+    };
+
+    const changeComment = (id, comment) => {
+        console.log(comment);
+        db.transaction((tx) => {
+            tx.executeSql(`update serials set comment = ? where id = ?;`, [
+                comment,
+                id,
+            ]);
         });
     };
 
@@ -74,7 +86,7 @@ export const SerialsScreen = ({ navigation }) => {
         setItems((prev) =>
             prev.filter((prev) => {
                 if (prev.id == id) {
-                  updateSezon(id, ++prev.sezon);
+                    updateSezon(id, ++prev.sezon);
                 }
             })
         );
@@ -84,7 +96,7 @@ export const SerialsScreen = ({ navigation }) => {
         setItems((prev) =>
             prev.filter((prev) => {
                 if (prev.id == id) {
-                  updateSezon(id, --prev.sezon);
+                    updateSezon(id, --prev.sezon);
                 }
             })
         );
@@ -94,7 +106,7 @@ export const SerialsScreen = ({ navigation }) => {
         setItems((prev) =>
             prev.filter((prev) => {
                 if (prev.id == id) {
-                  updateEpizod(id, ++prev.epizod);
+                    updateEpizod(id, ++prev.epizod);
                 }
             })
         );
@@ -103,10 +115,10 @@ export const SerialsScreen = ({ navigation }) => {
     const decE = (id) => {
         setItems((prev) =>
             prev.filter((prev) => {
-              console.log(prev);
+                console.log(prev);
                 if (prev.id == id) {
-                  console.log(prev.id == id);
-                  updateEpizod(id, --prev.epizod);
+                    console.log(prev.id == id);
+                    updateEpizod(id, --prev.epizod);
                 }
                 return prev;
             })
@@ -123,21 +135,22 @@ export const SerialsScreen = ({ navigation }) => {
     }
 
     function updateEpizod(id, value) {
-      db.transaction((tx) => {
-          tx.executeSql(`update serials set epizod = ? where id = ?;`, [
-              value,
-              id,
-          ]);
-      });
-  }
+        db.transaction((tx) => {
+            tx.executeSql(`update serials set epizod = ? where id = ?;`, [
+                value,
+                id,
+            ]);
+        });
+    }
 
     const addSerial = (name, sezon, epizod) => {
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO serials (id, name, sezon, epizod) VALUES (?, ?, ?, ?);",
-                [Date.now().toString(), name, sezon, epizod]
+                "INSERT INTO serials (id, name, sezon, epizod, comment) VALUES (?, ?, ?, ?, ?);",
+                [Date.now().toString(), name, sezon, epizod, ""]
             );
         });
+        console.log(items);
     };
 
     const gotoAddSerial = () => {
@@ -161,7 +174,8 @@ export const SerialsScreen = ({ navigation }) => {
                                             el.id,
                                             el.name,
                                             el.sezon,
-                                            el.epizod
+                                            el.epizod,
+                                            el.comment
                                         )
                                     }
                                     onLongPress={() => deleteSerial(el.id)}
