@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View, Text, StyleSheet } from 'react-native'
+import {View, Text, StyleSheet, ScrollView } from 'react-native'
 import { Button, Input } from "react-native-elements";
 
 export const CreateBookScreen = ({ navigation }) => {
@@ -15,24 +15,26 @@ export const CreateBookScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.conteiner}>
-            <Text style={styles.text}>Название книги</Text>
-            <Input
-                placeholder='Введите название книги'
-                onChangeText={setName}
-                />
-            <Button
-                type="outline"
-                onPress={addBook}
-                buttonStyle={{
-                    flex: 1,
-                    height: 100,
-                    width: 100,  
-                }}
+       <ScrollView>
+            <View style={styles.conteiner}>
+                <Text style={styles.text}>Название книги</Text>
+                <Input
+                    placeholder='Введите название книги'
+                    onChangeText={setName}
+                    autoFocus={true}
+                    />
+                <Button
+                    type="outline"
+                    onPress={addBook}
+                    buttonStyle={{
+                        height: 60,
+                        width: 140,  
+                    }}
 
-                title="Добавить"
-            />
-        </View>
+                    title="Добавить"
+                />
+            </View>
+       </ScrollView>
     )
 }
 
@@ -41,7 +43,8 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 50
+        paddingHorizontal: 50,
+        paddingVertical: 50
     },
     text: {
         fontSize: 20

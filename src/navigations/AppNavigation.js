@@ -1,47 +1,10 @@
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createStackNavigator } from "react-navigation-stack";
 
-import  DrawerNavigation  from './DrawerNavigation'
+// import  DrawerNavigation  from './DrawerNavigation'
 import SerialNavigation from './SerialNavigation';
 import { FilmNavigation } from './FilmNavigation';   
 import { BookNavigation } from './BookNavigation';
-
-// const _SerialsNavigator = createStackNavigator(
-//     {
-//         Serials: {
-//             screen: SerialsScreen,
-//             navigationOptions: {
-//                 title: 'Serials',
-//                 headerTitleAlign: 'center',
-//             },
-//         }
-//     }
-// )
-
-// const _FilmsNavigator = createStackNavigator(
-//     {
-//         Films: {
-//             screen: FilmsScreen,
-//             navigationOptions: {
-//                 title: 'Films',
-//                 headerTitleAlign: 'center'
-//             },
-//         }
-//     }
-// )
-
-// const _BooksNavigator = createStackNavigator(
-//     {
-//         Books: {
-//             screen: BooksScreen,
-//             navigationOptions: {
-//                 title: 'Books',
-//                 headerTitleAlign: 'center'
-//             },
-//         }
-//     }
-// )
 
 const AppNavigation = createBottomTabNavigator(
     {
@@ -75,19 +38,14 @@ const AppNavigation = createBottomTabNavigator(
             activeTintColor: '#e91e63',
             inactiveTintColor: '#000',
             tabBarVisible: true,
-            // animationEnabled: true,
-            // showLabel: false,
             labelStyle: {
                 fontSize: 18,
-                // color: '#fff'
                 
             }, 
             style: {
-                // backgroundColor: 'blue',
-                // flex: 1,
                 alignItems: 'center',
-                // justifyContent: 'center'
             },
+            keyboardHidesTabBar: true 
         }
     }
 );

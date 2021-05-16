@@ -1,0 +1,22 @@
+--
+-- Файл сгенерирован с помощью SQLiteStudio v3.3.3 в Пт май 14 21:47:55 2021
+--
+-- Использованная кодировка текста: System
+--
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Таблица: books
+CREATE TABLE books (id STRING (20) PRIMARY KEY NOT NULL UNIQUE, name STRING, stopping INTEGER, comment STRING, status STRING);
+
+-- Таблица: films
+CREATE TABLE films (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING, status STRING, comment STRING);
+
+-- Таблица: notepad
+CREATE TABLE notepad (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), comment STRING);
+
+-- Таблица: serials
+CREATE TABLE serials (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), sezon INTEGER, epizod INTEGER, comment STRING);
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;
