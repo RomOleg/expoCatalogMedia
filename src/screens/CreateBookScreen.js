@@ -9,7 +9,7 @@ export const CreateBookScreen = ({ navigation }) => {
     const addBook = () => {
         if (name) {
             const navigationAdd = navigation.getParam('addBook')
-            navigationAdd(name)
+            navigationAdd(name.trim())
             navigation.goBack()
         }else alert("Укажите название книги")
     }
@@ -20,6 +20,9 @@ export const CreateBookScreen = ({ navigation }) => {
                 <Text style={styles.text}>Название книги</Text>
                 <Input
                     placeholder='Введите название книги'
+                    multiline={true}
+                    inputStyle={{textAlign: "center"}}
+                    maxLength={40}
                     onChangeText={setName}
                     autoFocus={true}
                     />
