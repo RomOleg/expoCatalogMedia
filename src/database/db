@@ -13,7 +13,7 @@ CREATE TABLE books (id STRING (20) PRIMARY KEY NOT NULL UNIQUE, name STRING, sto
 CREATE TABLE films (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING, status STRING, comment STRING);
 
 -- Таблица: notepad
-CREATE TABLE notepad (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), comment STRING);
+CREATE TABLE notepad (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), comment STRING), date STRING;
 
 -- Таблица: serials
 CREATE TABLE serials (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), sezon INTEGER, epizod INTEGER, comment STRING);

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    ScrollView,
+} from "react-native";
 import { ListItem } from "react-native-elements";
 import { AddBtn } from "../components/AddBtn";
 import { isNameSearch, MySearchBar } from "../components/MySearchBar";
@@ -7,13 +12,13 @@ import { OpenDatabase } from "../database/connectionDB";
 
 const db = OpenDatabase("db.db");
 
-export const FilmsScreen = ({ navigation }) => {
-    const [films, setFilms] = useState(null);
+export const NotePadsScreen = ({ navigation }) => {
+    const [notepad, setNotepad] = useState(null);
 
     React.useEffect(() => {
         db.transaction((tx) => {
             tx.executeSql(
-                "create table if not exists films (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING, status STRING, comment STRING);"
+                "create table if not exists notepad (id STRING (20) PRIMARY KEY UNIQUE NOT NULL, name STRING (40), comment STRING, date STRING);"
             );
         });
     }, []);
@@ -21,58 +26,51 @@ export const FilmsScreen = ({ navigation }) => {
     React.useEffect(() => {
         db.transaction((tx) => {
             tx.executeSql(
-                `select * from films;`,
+                `select * from notepad;`,
                 [],
-                (_, { rows: { _array } }) => setFilms(_array)
+                (_, { rows: { _array } }) => setNotepad(_array)
             );
         });
-    }, [films]);
+    }, [notepad]);
 
-    const status = ["В планах", "Просмотренно"];
-
-    const addFilm = (name) => {
+    const addNotePad = (name) => {
+        let date = new Date();
         db.transaction((tx) => {
             tx.executeSql(
-                "INSERT INTO films (id, name, status, comment) VALUES (?, ?, ?, ?);",
-                [Date.now().toString(), name, status[0], ""]
+                "INSERT INTO notepad (id, name, comment, date) VALUES (?, ?, ?, ?);",
+                [
+                    Date.now().toString(),
+                    name,
+                    "",
+                    `${date.getDate()}:${date.getMonth()+1}:${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`,
+                ]
             );
         });
     };
 
-    const deleteFilm = (id) => {
+    const deleteNotePad = (id) => {
         db.transaction((tx) => {
-            tx.executeSql(`delete from films where id = ?;`, [id]);
+            tx.executeSql(`delete from notepad where id = ?;`, [id]);
         });
-        // setFilms((prev) => prev.filter((prev) => prev.id !== id));
     };
 
-    const gotoFilm = (id, name, status, comment) => {
-        navigation.navigate("Film", {
+    const gotoNotePad = (id, name, comment, date) => {
+        navigation.navigate("NotePad", {
             id,
             name,
-            status,
             comment,
-            changeStatus,
+            date,
             changeComment,
         });
     };
 
-    const gotoAddFilm = () => {
-        navigation.navigate("AddFilm", { addFilm });
-    };
-
-    const changeStatus = (id, status) => {
-        db.transaction((tx) => {
-            tx.executeSql(`update films set status = ? where id = ?;`, [
-                status,
-                id,
-            ]);
-        });
+    const gotoAddNotePad = () => {
+        navigation.navigate("AddNotePad", { addNotePad });
     };
 
     const changeComment = (id, comment) => {
         db.transaction((tx) => {
-            tx.executeSql(`update films set comment = ? where id = ?;`, [
+            tx.executeSql(`update notepad set comment = ? where id = ?;`, [
                 comment,
                 id,
             ]);
@@ -81,51 +79,37 @@ export const FilmsScreen = ({ navigation }) => {
 
     const [search, setSearch] = useState("");
 
-    /**
-     * isVisible Component JSX AddBtn
-     */
-    // React.useEffect(() => {
-    //     Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
-    //     Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
-    //   }, [visibleAddBtn]);
-    
-    //   const _keyboardShowHide = () => {
-    //     setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
-    //   };
-
-    //   const [visibleAddBtn, setVisibleAddBtn] = useState(true)
-
     return (
         <View style={styles.conteiner}>
-            <AddBtn goto={gotoAddFilm} />
+            <AddBtn goto={gotoAddNotePad} />
             <MySearchBar text={search} onText={(text) => setSearch(text)} />
             <ScrollView style={styles.conteiner}>
-                {films === null || films.length === 0 ? (
+                {notepad === null || notepad.length === 0 ? (
                     <></>
                 ) : (
-                    films.map((el) => (
+                    notepad.map((el) => (
                         <View key={el.id}>
                             {isNameSearch(el.name, search) || !search ? (
                                 <ListItem key={el.id} bottomDivider>
                                     <ListItem.Content>
                                         <TouchableOpacity
                                             onPress={() =>
-                                                gotoFilm(
+                                                gotoNotePad(
                                                     el.id,
                                                     el.name,
-                                                    el.status,
-                                                    el.comment
+                                                    el.comment,
+                                                    el.date
                                                 )
                                             }
                                             onLongPress={() =>
-                                                deleteFilm(el.id)
+                                                deleteNotePad(el.id)
                                             }
                                         >
                                             <ListItem.Title>
                                                 {el.name}
                                             </ListItem.Title>
                                             <ListItem.Subtitle>
-                                                статус: {el.status}
+                                                {el.date}
                                             </ListItem.Subtitle>
                                         </TouchableOpacity>
                                     </ListItem.Content>

@@ -9,7 +9,7 @@ export const CreateFilmScreen = ({ navigation }) => {
     const addFilm = () => {
         if (name) {
             const navigationAddFilm = navigation.getParam('addFilm')
-            navigationAddFilm(name)
+            navigationAddFilm(name.trim())
             navigation.goBack()
         }else alert("Укажите название фильма")
     }
@@ -21,6 +21,9 @@ export const CreateFilmScreen = ({ navigation }) => {
                 <Input
                     autoFocus={true}
                     placeholder='Введите название фильма'
+                    multiline={true}
+                    inputStyle={{textAlign: "center"}}
+                    maxLength={40}
                     onChangeText={setName}
                     />
                 <Button

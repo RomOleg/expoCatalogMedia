@@ -133,20 +133,23 @@ export const SerialsScreen = ({ navigation }) => {
 
     const [search, setSearch] = useState("");
 
-    React.useEffect(() => {
-        Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
-        Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
-      }, [visibleAddBtn]);
+    /**
+     * isVisible Component JSX AddBtn
+     */
+    // React.useEffect(() => {
+    //     Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
+    //     Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
+    //   }, [visibleAddBtn]);
     
-      const _keyboardShowHide = () => {
-        setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
-      };
+    //   const _keyboardShowHide = () => {
+    //     setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
+    //   };
 
-      const [visibleAddBtn, setVisibleAddBtn] = useState(true)
+    //   const [visibleAddBtn, setVisibleAddBtn] = useState(true)
 
     return (
         <View style={styles.conteiner}>
-            <AddBtn visible={visibleAddBtn} goto={gotoAddSerial} />
+            <AddBtn goto={gotoAddSerial} />
             <MySearchBar text={search} onText={(text) => setSearch(text)} />
             <ScrollView style={styles.conteiner}>
                 {items === null || items.length === 0 ? (
