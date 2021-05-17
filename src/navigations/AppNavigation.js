@@ -52,7 +52,7 @@ const AppNavigation = createBottomTabNavigator(
             style: {
                 alignItems: 'center',
             },
-            keyboardHidesTabBar: true 
+            keyboardHidesTabBar: true,      
         }
     }
 );
