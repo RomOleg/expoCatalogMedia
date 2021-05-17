@@ -1,32 +1,11 @@
 import React, { useState } from "react";
-import {
-    Text,
-    View,
-    StyleSheet,
-    Alert,
-    TouchableOpacity,
-    ScrollView,
-    Button,
-} from "react-native";
-import { ListItem, Avatar, Input, Icon } from "react-native-elements";
+import { View, StyleSheet, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { ListItem } from "react-native-elements";
 import { AddBtn } from "../components/AddBtn";
-import * as SQLite from "expo-sqlite";
+import { isNameSearch, MySearchBar } from "../components/MySearchBar";
+import { OpenDatabase } from "../database/connectionDB";
 
-function openDatabase() {
-    if (Platform.OS === "web") {
-        return {
-            transaction: () => {
-                return {
-                    executeSql: () => {},
-                };
-            },
-        };
-    }
-    const db = SQLite.openDatabase("db.db");
-    return db;
-}
-
-const db = openDatabase();
+const db = OpenDatabase("db.db");
 
 export const FilmsScreen = ({ navigation }) => {
     const [films, setFilms] = useState(null);
@@ -68,7 +47,14 @@ export const FilmsScreen = ({ navigation }) => {
     };
 
     const gotoFilm = (id, name, status, comment) => {
-        navigation.navigate("Film", { id, name, status, comment, changeStatus, changeComment });
+        navigation.navigate("Film", {
+            id,
+            name,
+            status,
+            comment,
+            changeStatus,
+            changeComment,
+        });
     };
 
     const gotoAddFilm = () => {
@@ -93,30 +79,56 @@ export const FilmsScreen = ({ navigation }) => {
         });
     };
 
+    const [search, setSearch] = useState("");
+
+    React.useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
+        Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
+      }, [visibleAddBtn]);
+    
+      const _keyboardShowHide = () => {
+        setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
+      };
+
+      const [visibleAddBtn, setVisibleAddBtn] = useState(true)
+
     return (
         <View style={styles.conteiner}>
-            <AddBtn goto={gotoAddFilm} />
-
+            <AddBtn visible={visibleAddBtn} goto={gotoAddFilm} />
+            <MySearchBar text={search} onText={(text) => setSearch(text)} />
             <ScrollView style={styles.conteiner}>
                 {films === null || films.length === 0 ? (
                     <></>
                 ) : (
-                    films.map((el, i) => (
-                        <ListItem key={i} bottomDivider>
-                            <ListItem.Content>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        gotoFilm(el.id, el.name, el.status, el.comment)
-                                    }
-                                    onLongPress={() => deleteFilm(el.id)}
-                                >
-                                    <ListItem.Title>{el.name}</ListItem.Title>
-                                    <ListItem.Subtitle>
-                                        статус: {el.status}
-                                    </ListItem.Subtitle>
-                                </TouchableOpacity>
-                            </ListItem.Content>
-                        </ListItem>
+                    films.map((el) => (
+                        <View key={el.id}>
+                            {isNameSearch(el.name, search) || !search ? (
+                                <ListItem key={el.id} bottomDivider>
+                                    <ListItem.Content>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                gotoFilm(
+                                                    el.id,
+                                                    el.name,
+                                                    el.status,
+                                                    el.comment
+                                                )
+                                            }
+                                            onLongPress={() =>
+                                                deleteFilm(el.id)
+                                            }
+                                        >
+                                            <ListItem.Title>
+                                                {el.name}
+                                            </ListItem.Title>
+                                            <ListItem.Subtitle>
+                                                статус: {el.status}
+                                            </ListItem.Subtitle>
+                                        </TouchableOpacity>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : null}
+                        </View>
                     ))
                 )}
             </ScrollView>
@@ -128,12 +140,5 @@ const styles = StyleSheet.create({
     conteiner: {
         flex: 1,
         zIndex: 0,
-    },
-    add: {
-        flex: 1,
-        position: "absolute",
-        zIndex: 1,
-        right: 35,
-        bottom: 30,
     },
 });

@@ -1,95 +1,154 @@
-import React , { useState } from 'react';
-import { Text, View, StyleSheet, Alert, TouchableOpacity, ScrollView, Button } from "react-native";
-import { ListItem, Avatar, Input, Icon } from 'react-native-elements';
-import { AddBtn } from '../components/AddBtn';
+import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { ListItem } from "react-native-elements";
+import { AddBtn } from "../components/AddBtn";
+import { MySearchBar, isNameSearch } from "../components/MySearchBar";
+import { OpenDatabase } from "../database/connectionDB";
+
+const db = OpenDatabase("db.db");
 
 export const BooksScreen = ({ navigation }) => {
+    const [books, setBooks] = useState(null);
 
-    const [books, setBooks] = useState([
-        {
-            id: Date.now().toString(),
-            name: 'film',
-            status: 'в планах',
-            stoping: {
-                page: 10,
-                
-            }
-        }
-    ]);
+    React.useEffect(() => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "create table if not exists books (id STRING (20) PRIMARY KEY NOT NULL UNIQUE, name STRING, stopping INTEGER, comment STRING, status STRING);"
+            );
+        });
+    }, []);
+
+    React.useEffect(() => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                `select * from books;`,
+                [],
+                (_, { rows: { _array } }) => setBooks(_array)
+            );
+        });
+    }, [books]);
 
     const addBook = (name) => {
-        setBooks(prev => [
-            ...prev,
-            {
-                id: Date.now().toString(),
-                name,
-                status: 'в планах',
-                stoping: {
-                    page: 0,
-                    
-                }
-            }
-        ])
-    }
+        db.transaction((tx) => {
+            tx.executeSql(
+                "INSERT INTO books (id, name, stopping, comment, status) VALUES (?, ?, ?, ?, ?);",
+                [Date.now().toString(), name, 0, "", "Читаю"]
+            );
+        });
+    };
 
     const deleteBook = (id) => {
-        setBooks(prev => prev.filter(prev => prev.id !== id))
-    }
+        db.transaction((tx) => {
+            tx.executeSql(`delete from books where id = ?;`, [id]);
+        });
+        // setBooks(prev => prev.filter(prev => prev.id !== id))
+    };
 
-    const gotoBook = (id, name, status, page) => {
-        navigation.navigate('Book', {id, name, status, page, changeStatus, changeStoping})
-    }
-
+    const gotoBook = (id, name, status, page, comment) => {
+        navigation.navigate("Book", {
+            id,
+            name,
+            status,
+            page,
+            comment,
+            changeStatus,
+            changeStopping,
+            changeComment,
+        });
+    };
 
     const gotoAddBook = () => {
-        navigation.navigate('AddBook', { addBook })
-    }
+        navigation.navigate("AddBook", { addBook });
+    };
+
+    const changeStopping = (id, page) => {
+        db.transaction((tx) => {
+            tx.executeSql(`update books set stopping = ? where id = ?;`, [
+                page,
+                id,
+            ]);
+        });
+    };
 
     const changeStatus = (id, status) => {
-        setBooks(prev => prev.filter(prev => {
-            if (prev.id == id) {
-                prev.status = status
-            }
-            return prev
-        }))
-    }
+        db.transaction((tx) => {
+            tx.executeSql(`update books set status = ? where id = ?;`, [
+                status,
+                id,
+            ]);
+        });
+    };
 
-    const changeStoping = (id, page) => {
-        setBooks(prev => prev.filter(prev => {
-            if (prev.id == id) {
-                prev.stoping.page = page
-            }
-            return prev
-        }))
-    }
+    const changeComment = (id, comment) => {
+        db.transaction((tx) => {
+            tx.executeSql(`update books set comment = ? where id = ?;`, [
+                comment,
+                id,
+            ]);
+        });
+    };
+
+    const [search, setSearch] = useState("");
+
+    React.useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
+        Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
+      }, [visibleAddBtn]);
+    
+      const _keyboardShowHide = () => {
+        setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
+      };
+
+      const [visibleAddBtn, setVisibleAddBtn] = useState(true)
 
     return (
         <View style={styles.conteiner}>
-
-            <AddBtn goto={gotoAddBook} />
-
-            <ScrollView style={styles.conteiner}>
-            {
-                books.map((el, i) => (
-                    <ListItem key={i} bottomDivider>  
-                        <ListItem.Content>
-                            <TouchableOpacity onPress={() => gotoBook(el.id, el.name, el.status, el.stoping.page)} onLongPress={() => deleteBook(el.id)}>
-                            <ListItem.Title>{el.name}</ListItem.Title>
-                            <ListItem.Subtitle>статус {el.status}</ListItem.Subtitle>
-                            </TouchableOpacity>
-                        </ListItem.Content>
-                    </ListItem>
-                ))
-            }
+            <AddBtn visible={visibleAddBtn} goto={gotoAddBook} />
+            <MySearchBar text={search} onText={(text) => setSearch(text)} />
+            <ScrollView style={styles.conteiner} >
+                {books === null || books.length === 0 ? (
+                    <></>
+                ) : (
+                    books.map((el) => (
+                        <View key={el.id}>
+                            {isNameSearch(el.name, search) || !search ? (
+                                <ListItem key={el.id} bottomDivider>
+                                    <ListItem.Content>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                gotoBook(
+                                                    el.id,
+                                                    el.name,
+                                                    el.status,
+                                                    el.stopping,
+                                                    el.comment
+                                                )
+                                            }
+                                            onLongPress={() =>
+                                                deleteBook(el.id)
+                                            }
+                                        >
+                                            <ListItem.Title>
+                                                {el.name}
+                                            </ListItem.Title>
+                                            <ListItem.Subtitle>
+                                                статус: {el.status}
+                                            </ListItem.Subtitle>
+                                        </TouchableOpacity>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : null}
+                        </View>
+                    ))
+                )}
             </ScrollView>
-
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     conteiner: {
         flex: 1,
         zIndex: 0,
     },
-})
+});

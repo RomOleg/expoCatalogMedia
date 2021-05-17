@@ -58,9 +58,7 @@ export const FilmScreen = ({ navigation }) => {
                     onPress={changeStatus}
                     type="outline"
                     buttonStyle={{
-                        width: 160,
-                        height: 80,
-                        marginLeft: "25%",
+                        height: 60,
                         marginTop: "12%",
                     }}
                     titleStyle={{ fontSize: 20 }}
@@ -83,10 +81,5 @@ const styles = StyleSheet.create({
     text: {
         padding: 20,
         fontSize: 18,
-    },
-    btn: {
-        flex: 1,
-        height: 100,
-        width: 100,
     },
 });

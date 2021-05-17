@@ -1,17 +1,11 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Icon, Image } from 'react-native-elements';
+import { View, StyleSheet } from "react-native";
+import { Image } from 'react-native-elements';
 
-export const AddBtn = ( { goto } ) => {
+export const AddBtn = ( { goto, visible = 1 } ) => {
     return(
         <View style={styles.add}>
-            {/* <Icon name='add' size={55} color='#fff'
-                onPress={goto}
-                iconStyle={{
-                    backgroundColor: 'red',
-                    borderRadius: '50%',
-                }}/> */}
-            <Image  source={require('../media/Floating_Button.png')} style={{ width: 70, height: 70 }} onPress={goto}/>
+            {visible ? <Image  source={require('../media/Floating_Button.png')} style={{ width: 70, height: 70 }} onPress={goto}/> : <></>}
         </View>
     )
 }

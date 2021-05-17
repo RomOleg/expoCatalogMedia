@@ -1,32 +1,11 @@
 import React, { useState } from "react";
-import {
-    Text,
-    View,
-    StyleSheet,
-    Alert,
-    TouchableOpacity,
-    ScrollView,
-    Button,
-} from "react-native";
-import { ListItem, Avatar, Input, Icon } from "react-native-elements";
+import { View, StyleSheet, TouchableOpacity, ScrollView, Keyboard } from "react-native";
+import { ListItem } from "react-native-elements";
 import { AddBtn } from "../components/AddBtn";
-import * as SQLite from "expo-sqlite";
+import { isNameSearch, MySearchBar } from "../components/MySearchBar";
+import { OpenDatabase } from "../database/connectionDB";
 
-function openDatabase() {
-    if (Platform.OS === "web") {
-        return {
-            transaction: () => {
-                return {
-                    executeSql: () => {},
-                };
-            },
-        };
-    }
-    const db = SQLite.openDatabase("db.db");
-    return db;
-}
-
-const db = openDatabase();
+const db = OpenDatabase("db.db");
 
 export const SerialsScreen = ({ navigation }) => {
     const [items, setItems] = React.useState(null);
@@ -48,7 +27,6 @@ export const SerialsScreen = ({ navigation }) => {
             );
         });
     }, [items]);
-    // console.log(items);
 
     const deleteSerial = (id) => {
         db.transaction((tx) => {
@@ -68,12 +46,11 @@ export const SerialsScreen = ({ navigation }) => {
             decS,
             decE,
             changeComment,
-            comment
+            comment,
         });
     };
 
     const changeComment = (id, comment) => {
-        console.log(comment);
         db.transaction((tx) => {
             tx.executeSql(`update serials set comment = ? where id = ?;`, [
                 comment,
@@ -115,9 +92,7 @@ export const SerialsScreen = ({ navigation }) => {
     const decE = (id) => {
         setItems((prev) =>
             prev.filter((prev) => {
-                console.log(prev);
                 if (prev.id == id) {
-                    console.log(prev.id == id);
                     updateEpizod(id, --prev.epizod);
                 }
                 return prev;
@@ -150,43 +125,63 @@ export const SerialsScreen = ({ navigation }) => {
                 [Date.now().toString(), name, sezon, epizod, ""]
             );
         });
-        console.log(items);
     };
 
     const gotoAddSerial = () => {
         navigation.navigate("AddSerial", { addSerial });
     };
 
+    const [search, setSearch] = useState("");
+
+    React.useEffect(() => {
+        Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
+        Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
+      }, [visibleAddBtn]);
+    
+      const _keyboardShowHide = () => {
+        setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
+      };
+
+      const [visibleAddBtn, setVisibleAddBtn] = useState(true)
+
     return (
         <View style={styles.conteiner}>
-            <AddBtn goto={gotoAddSerial} />
-
+            <AddBtn visible={visibleAddBtn} goto={gotoAddSerial} />
+            <MySearchBar text={search} onText={(text) => setSearch(text)} />
             <ScrollView style={styles.conteiner}>
                 {items === null || items.length === 0 ? (
                     <></>
                 ) : (
-                    items.map((el, i) => (
-                        <ListItem key={i} bottomDivider>
-                            <ListItem.Content>
-                                <TouchableOpacity
-                                    onPress={() =>
-                                        gotoSerial(
-                                            el.id,
-                                            el.name,
-                                            el.sezon,
-                                            el.epizod,
-                                            el.comment
-                                        )
-                                    }
-                                    onLongPress={() => deleteSerial(el.id)}
-                                >
-                                    <ListItem.Title>{el.name}</ListItem.Title>
-                                    <ListItem.Subtitle>
-                                        сезон: {el.sezon} серия: {el.epizod}
-                                    </ListItem.Subtitle>
-                                </TouchableOpacity>
-                            </ListItem.Content>
-                        </ListItem>
+                    items.map((el) => (
+                        <View key={el.id}>
+                            {isNameSearch(el.name, search) || !search ? (
+                                <ListItem key={el.id} bottomDivider>
+                                    <ListItem.Content>
+                                        <TouchableOpacity
+                                            onPress={() =>
+                                                gotoSerial(
+                                                    el.id,
+                                                    el.name,
+                                                    el.sezon,
+                                                    el.epizod,
+                                                    el.comment
+                                                )
+                                            }
+                                            onLongPress={() =>
+                                                deleteSerial(el.id)
+                                            }
+                                        >
+                                            <ListItem.Title>
+                                                {el.name}
+                                            </ListItem.Title>
+                                            <ListItem.Subtitle>
+                                                сезон: {el.sezon} серия: {el.epizod}
+                                            </ListItem.Subtitle>
+                                        </TouchableOpacity>
+                                    </ListItem.Content>
+                                </ListItem>
+                            ) : <></>}
+                        </View>
                     ))
                 )}
             </ScrollView>
