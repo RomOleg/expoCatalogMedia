@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import SerialNavigation from './SerialNavigation';
 import { FilmNavigation } from './FilmNavigation';   
 import { BookNavigation } from './BookNavigation';
+import { NotePadNavigation } from './NotePadNavigation';
 
 const AppNavigation = createBottomTabNavigator(
     {
@@ -26,6 +27,12 @@ const AppNavigation = createBottomTabNavigator(
                 title: 'Книги',
             },
         },
+        NotePads: {
+            screen: NotePadNavigation,
+            navigationOptions: {
+                title: 'Блокнот'
+            }
+        }
         // Drawer: {
         //     screen: DrawerNavigation,
         //     navigationOptions: {
@@ -45,7 +52,7 @@ const AppNavigation = createBottomTabNavigator(
             style: {
                 alignItems: 'center',
             },
-            keyboardHidesTabBar: true 
+            keyboardHidesTabBar: true,      
         }
     }
 );

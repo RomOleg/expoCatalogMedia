@@ -10,7 +10,7 @@ export const CreateSerialScreen = ({ navigation }) => {
     const addSerial = () => {
         if (name) {
             const navigationAddSerial = navigation.getParam("addSerial");
-            navigationAddSerial(name, +s, +e);
+            navigationAddSerial(name.trim(), +s, +e);
             navigation.goBack();
         } else alert("Укажите название сериала");
     };
@@ -22,9 +22,11 @@ export const CreateSerialScreen = ({ navigation }) => {
                 <Input
                     autoFocus={true}
                     placeholder="Введите название сериала"
+                    multiline={true}
+                    maxLength={40}
                     onChangeText={setName}
                     inputStyle={styles.input}
-                    onSubmitEditing={() => this.second.focus()}
+                    // onSubmitEditing={() => this.second.focus()}
                     blurOnSubmit={false}
                 />
                 <Text style={styles.text}>Сезон</Text>
@@ -38,8 +40,8 @@ export const CreateSerialScreen = ({ navigation }) => {
                     value={s}
                     onChangeText={setS}
                     inputStyle={styles.input}
-                    ref={(input) => { this.second = input; }}
-                    onSubmitEditing={() => this.secondTextInput1.focus()}
+                    // ref={(input) => { this.second = input; }}
+                    // onSubmitEditing={() => this.secondTextInput1.focus()}
                     blurOnSubmit={false}
                 />
                 <Text style={styles.text}>Серия</Text>
@@ -53,7 +55,7 @@ export const CreateSerialScreen = ({ navigation }) => {
                     value={e}
                     onChangeText={setE}
                     inputStyle={styles.input}
-                    ref={(input) => { this.secondTextInput1 = input; }}
+                    // ref={(input) => { this.secondTextInput1 = input; }}
                 />
                 <Button
                     type="outline"

@@ -90,20 +90,23 @@ export const BooksScreen = ({ navigation }) => {
 
     const [search, setSearch] = useState("");
 
-    React.useEffect(() => {
-        Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
-        Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
-      }, [visibleAddBtn]);
+    /**
+     * isVisible Component JSX AddBtn
+     */
+    // React.useEffect(() => {
+    //     Keyboard.addListener('keyboardDidShow', _keyboardShowHide);
+    //     Keyboard.addListener('keyboardDidHide', _keyboardShowHide);
+    //   }, [visibleAddBtn]);
     
-      const _keyboardShowHide = () => {
-        setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
-      };
+    //   const _keyboardShowHide = () => {
+    //     setVisibleAddBtn((visibleAddBtn) => !visibleAddBtn)
+    //   };
 
-      const [visibleAddBtn, setVisibleAddBtn] = useState(true)
+    //   const [visibleAddBtn, setVisibleAddBtn] = useState(true)
 
     return (
         <View style={styles.conteiner}>
-            <AddBtn visible={visibleAddBtn} goto={gotoAddBook} />
+            <AddBtn goto={gotoAddBook} />
             <MySearchBar text={search} onText={(text) => setSearch(text)} />
             <ScrollView style={styles.conteiner} >
                 {books === null || books.length === 0 ? (

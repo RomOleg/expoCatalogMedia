@@ -13,8 +13,6 @@ export const MyTextArea = ({ comment, text }) => {
                 numberOfLines={10}
                 multiline={true}
                 defaultValue={comment}
-                // autoCapitalize={true}
-                textAlign={'center'}
             />
         </View>
     )
@@ -24,13 +22,11 @@ const styles = StyleSheet.create({
     textAreaContainer: {
       borderColor: 'gray',
       borderWidth: 1,
-      // padding: 15,
-      // margin: 10,
-      alignItems: 'center',
+      padding: 5,
     },
     textArea: {
       flex: 1,
-      width: "80%",  
       height: 100,
+      textAlignVertical: 'top'
     }
   })
