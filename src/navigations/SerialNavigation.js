@@ -11,7 +11,7 @@ const SerialNavigation = createStackNavigator({
         navigationOptions: ({ navigation }) => ({
             title: 'Сериалы',
             headerTitleAlign: 'center',
-            headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} } onPress={() => alert('hi')}/>,
+            // headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} }  />,
         }),
         
     },

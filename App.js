@@ -1,13 +1,11 @@
 import React from "react";
-import { Text } from "react-native";
 import { StyleSheet, SafeAreaView } from "react-native";
-import AppNavigation from "./src/navigations/AppNavigation";
+import { MyDrawer } from "./src/components/MyDrawer";
 
 export default function App() {
-
     return (
         <SafeAreaView style={styles.container}>
-            <AppNavigation />
+            <MyDrawer />
         </SafeAreaView>
     );
 }

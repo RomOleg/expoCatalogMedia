@@ -24,12 +24,7 @@ export const NotePadScreen = ({ navigation }) => {
     }, [comment]);
 
     return (
-        <View
-            style={styles.conteiner}
-            onLayout={(event) => {
-                var { x_pos, y_pos, width, height } = event.nativeEvent.layout;
-            }}
-        >
+        <View style={styles.conteiner}>
             <ScrollView>
                 <Text style={{ marginBottom: 10, color: "#888" }}>
                     {navigation.getParam("date")}

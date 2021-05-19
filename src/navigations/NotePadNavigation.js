@@ -11,7 +11,7 @@ export const NotePadNavigation = createStackNavigator({
         navigationOptions: () => ({
             title: 'Блокнот',
             headerTitleAlign: 'center',
-            headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} } />
+            // headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} } />
         }),
         
     },
