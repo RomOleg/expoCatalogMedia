@@ -11,7 +11,7 @@ export const FilmNavigation = createStackNavigator({
         navigationOptions: () => ({
             title: 'Фильмы',
             headerTitleAlign: 'center',
-            headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} } />
+            // headerLeft: () => <Icon name="menu" size={35} iconStyle={ {padding: 20,} } />
         }),
         
     },

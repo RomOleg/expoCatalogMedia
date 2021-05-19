@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, ScrollView, TextInput } from "react-native";
-import { Button, Input } from "react-native-elements";
+import { Button } from "react-native-elements";
 
 export const CreateNotePadScreen = ({ navigation }) => {
     const [name, setName] = useState();
