@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expoCatalogMedia",
-    "slug": "expoCatalogMedia",
+    "name": "View content",
+    "slug": "view-content",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,9 +17,13 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.olezhka3x.viewcontent",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.olezhka3x.viewcontent",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -27,6 +31,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/RomOleg/expoCatalogMedia.git"
   }
 }
